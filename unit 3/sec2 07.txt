@@ -1,0 +1,25 @@
+Q7. Write a block that uses %ISOPEN to check whether the cursor is already open before opening it, and prints 'Cursor already open' if it is. Close the cursor and verify that %ISOPEN now returns FALSE.
+
+//answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    CURSOR c_book IS
+        SELECT book_id, title
+        FROM book;
+
+BEGIN
+    IF c_book%ISOPEN THEN
+        DBMS_OUTPUT.PUT_LINE('Cursor already open');
+    ELSE
+        OPEN c_book;
+    END IF;
+
+    CLOSE c_book;
+
+    IF NOT c_book%ISOPEN THEN
+        DBMS_OUTPUT.PUT_LINE('ISOPEN = FALSE');
+    END IF;
+END;
+/

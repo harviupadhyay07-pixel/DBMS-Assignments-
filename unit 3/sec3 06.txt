@@ -1,0 +1,25 @@
+Q6. Write a parameterised cursor that accepts a member id and lists every book that member has ever issued, along with the issue date. Use a three-table join.
+
+//answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    CURSOR c_issue(p_member_id NUMBER) IS
+        SELECT b.title, bi.issue_date
+        FROM lib_member m
+        JOIN book_issue bi
+        ON m.member_id = bi.member_id
+        JOIN book b
+        ON bi.book_id = b.book_id
+        WHERE m.member_id = p_member_id;
+
+BEGIN
+    FOR r IN c_issue(2) LOOP
+        DBMS_OUTPUT.PUT_LINE(
+            r.title || ' - ' ||
+            TO_CHAR(r.issue_date, 'DD-MON-YYYY')
+        );
+    END LOOP;
+END;
+/

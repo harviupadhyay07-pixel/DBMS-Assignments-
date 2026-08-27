@@ -1,0 +1,24 @@
+Q1. Write a parameterised cursor that accepts a category and displays all books of that category. Accept the category from the user with a substitution variable and test it with Database and Programming.
+
+//answer
+
+SET SERVEROUTPUT ON;
+
+ACCEPT category CHAR PROMPT 'Enter category: '
+
+DECLARE
+    CURSOR c_book(p_cat VARCHAR2) IS
+        SELECT book_id, title, price
+        FROM book
+        WHERE UPPER(category) = UPPER(p_cat);
+
+BEGIN
+    FOR r IN c_book('&category') LOOP
+        DBMS_OUTPUT.PUT_LINE(
+            r.book_id || ' - ' ||
+            r.title || ' - Rs.' ||
+            r.price
+        );
+    END LOOP;
+END;
+/

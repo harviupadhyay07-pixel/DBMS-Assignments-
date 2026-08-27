@@ -1,0 +1,34 @@
+Q8. Write a parameterised cursor that accepts a country and displays all publishers from that country. If the parameter matches no publisher, display 'No publisher found in <country>'. Use a BOOLEAN flag - explain in a comment why %ROWCOUNT cannot be checked after a cursor FOR loop has ended.
+//answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    CURSOR c_pub(p_country VARCHAR2) IS
+        SELECT pub_name, city, country
+        FROM publisher
+        WHERE UPPER(country) = UPPER(p_country);
+
+    v_found BOOLEAN := FALSE;
+    v_country VARCHAR2(30) := 'India';
+
+BEGIN
+    FOR r IN c_pub(v_country) LOOP
+        v_found := TRUE;
+
+        DBMS_OUTPUT.PUT_LINE(
+            r.pub_name || ' - ' ||
+            r.city || ' - ' ||
+            r.country
+        );
+    END LOOP;
+
+    -- %ROWCOUNT cannot be checked after a cursor FOR loop
+    -- because the cursor is automatically closed.
+    IF NOT v_found THEN
+        DBMS_OUTPUT.PUT_LINE(
+            'No publisher found in ' || v_country
+        );
+    END IF;
+END;
+/

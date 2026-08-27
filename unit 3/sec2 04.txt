@@ -1,0 +1,23 @@
+Q4. List all books whose price is greater than 500. Print a running serial number before each row using the %ROWCOUNT attribute.
+
+//answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    CURSOR c_book IS
+        SELECT book_id, title, price
+        FROM book
+        WHERE price > 500;
+
+BEGIN
+    FOR r IN c_book LOOP
+        DBMS_OUTPUT.PUT_LINE(
+            c_book%ROWCOUNT || '. ' ||
+            r.book_id || ' - ' ||
+            r.title || ' - Rs.' ||
+            r.price
+        );
+    END LOOP;
+END;
+/

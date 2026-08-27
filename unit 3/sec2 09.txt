@@ -1,0 +1,23 @@
+Q9. Using a cursor over a join of BOOK and PUBLISHER, display every book title along with the name of its publisher and the publisher's country.
+
+//answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    CURSOR c_book_pub IS
+        SELECT b.title, p.pub_name, p.country
+        FROM book b
+        JOIN publisher p
+        ON b.pub_id = p.pub_id;
+
+BEGIN
+    FOR r IN c_book_pub LOOP
+        DBMS_OUTPUT.PUT_LINE(
+            r.title || ' - ' ||
+            r.pub_name || ' - ' ||
+            r.country
+        );
+    END LOOP;
+END;
+/

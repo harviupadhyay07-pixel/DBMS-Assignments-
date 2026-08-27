@@ -1,0 +1,9 @@
+Q5. Complete the comparison table in your journal for Implicit cursor, Explicit (simple) cursor and Parameterised cursor under these headings: who declares it, who opens and closes it, whether it can be reused with different values, and one situation where each is the best choice.
+
+//answer
+
+| Cursor               | Who declares it? | Who opens/closes it? | Reused with different values? | Best choice                        |
+| -------------------- | ---------------- | -------------------- | ----------------------------- | ---------------------------------- |
+| Implicit Cursor      | Oracle           | Oracle               | No                            | Single SQL statement               |
+| Explicit Cursor      | Programmer       | Programmer           | No                            | Processing rows from a fixed query |
+| Parameterised Cursor | Programmer       | Programmer           | Yes                           | Same query with different values   |

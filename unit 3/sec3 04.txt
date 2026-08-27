@@ -1,0 +1,27 @@
+Q4. Write a cursor that accepts a course and a semester and displays all matching members with their join date formatted as DD-MON-YYYY.
+
+//answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    CURSOR c_member(
+        p_course VARCHAR2,
+        p_semester NUMBER
+    ) IS
+        SELECT member_name, course, semester, join_date
+        FROM lib_member
+        WHERE UPPER(course) = UPPER(p_course)
+        AND semester = p_semester;
+
+BEGIN
+    FOR r IN c_member('MCA', 2) LOOP
+        DBMS_OUTPUT.PUT_LINE(
+            r.member_name || ' - ' ||
+            r.course || ' - Sem ' ||
+            r.semester || ' - ' ||
+            TO_CHAR(r.join_date, 'DD-MON-YYYY')
+        );
+    END LOOP;
+END;
+/

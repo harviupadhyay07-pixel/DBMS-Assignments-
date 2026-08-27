@@ -1,0 +1,30 @@
+Q5. Declare a parameterised cursor with a DEFAULT value for its parameter, e.g. CURSOR c (p_cat VARCHAR2 DEFAULT 'Database'). Open it once without an argument and once with the argument 'Networking', and show both outputs.SET SERVEROUTPUT ON;
+
+//answer
+
+DECLARE
+    CURSOR c_book(
+        p_cat VARCHAR2 DEFAULT 'Database'
+    ) IS
+        SELECT book_id, title, category
+        FROM book
+        WHERE UPPER(category) = UPPER(p_cat);
+
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Database Books:');
+
+    FOR r IN c_book LOOP
+        DBMS_OUTPUT.PUT_LINE(
+            r.book_id || ' - ' || r.title
+        );
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Networking Books:');
+
+    FOR r IN c_book('Networking') LOOP
+        DBMS_OUTPUT.PUT_LINE(
+            r.book_id || ' - ' || r.title
+        );
+    END LOOP;
+END;
+/

@@ -1,0 +1,35 @@
+Q12. Write a block using SELECT ... FOR UPDATE and WHERE CURRENT OF that increases the stock of every book in the 'Database' category by 10, and prints the old and new stock for each row updated. Remember to COMMIT.
+
+//answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    CURSOR c_book IS
+        SELECT book_id, title, stock
+        FROM book
+        WHERE category = 'Database'
+        FOR UPDATE;
+
+    v_old_stock NUMBER;
+    v_new_stock NUMBER;
+
+BEGIN
+    FOR r IN c_book LOOP
+        v_old_stock := r.stock;
+        v_new_stock := r.stock + 10;
+
+        UPDATE book
+        SET stock = stock + 10
+        WHERE CURRENT OF c_book;
+
+        DBMS_OUTPUT.PUT_LINE(
+            r.title ||
+            ' - Old Stock: ' || v_old_stock ||
+            ' - New Stock: ' || v_new_stock
+        );
+    END LOOP;
+
+    COMMIT;
+END;
+/

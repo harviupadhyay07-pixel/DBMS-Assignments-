@@ -1,0 +1,25 @@
+Q11. Declare a cursor that selects all books ordered by price in descending order. Fetch and display only the top 5 rows, then exit the loop deliberately using EXIT WHEN cursor_name%ROWCOUNT = 5.
+
+//answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    CURSOR c_book IS
+        SELECT book_id, title, price
+        FROM book
+        ORDER BY price DESC;
+
+BEGIN
+    FOR r IN c_book LOOP
+        DBMS_OUTPUT.PUT_LINE(
+            c_book%ROWCOUNT || '. ' ||
+            r.book_id || ' - ' ||
+            r.title || ' - Rs.' ||
+            r.price
+        );
+
+        EXIT WHEN c_book%ROWCOUNT = 5;
+    END LOOP;
+END;
+/

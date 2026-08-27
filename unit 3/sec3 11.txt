@@ -1,0 +1,35 @@
+Q11. Write a parameterised cursor with FOR UPDATE that accepts a category and increases the price of all books in that category by 10 percent using WHERE CURRENT OF. Display the title, old price and new price for each row.
+
+//answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    CURSOR c_book(p_cat VARCHAR2) IS
+        SELECT book_id, title, price
+        FROM book
+        WHERE UPPER(category) = UPPER(p_cat)
+        FOR UPDATE;
+
+    v_old_price NUMBER;
+    v_new_price NUMBER;
+
+BEGIN
+    FOR r IN c_book('Database') LOOP
+        v_old_price := r.price;
+        v_new_price := r.price * 1.10;
+
+        UPDATE book
+        SET price = price * 1.10
+        WHERE CURRENT OF c_book;
+
+        DBMS_OUTPUT.PUT_LINE(
+            r.title ||
+            ' - Old Price: Rs.' || v_old_price ||
+            ' - New Price: Rs.' || v_new_price
+        );
+    END LOOP;
+
+    COMMIT;
+END;
+/

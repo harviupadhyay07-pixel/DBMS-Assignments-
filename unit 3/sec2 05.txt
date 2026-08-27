@@ -1,0 +1,26 @@
+Q5. Display every member's name in the format 1. RIYA SHAH (MSc IT - Sem 1). Convert the name to upper case inside the loop.
+
+//answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    CURSOR c_member IS
+        SELECT member_name, course, semester
+        FROM lib_member;
+
+    v_count NUMBER := 0;
+
+BEGIN
+    FOR r IN c_member LOOP
+        v_count := v_count + 1;
+
+        DBMS_OUTPUT.PUT_LINE(
+            v_count || '. ' ||
+            UPPER(r.member_name) ||
+            ' (' || r.course ||
+            ' - Sem ' || r.semester || ')'
+        );
+    END LOOP;
+END;
+/

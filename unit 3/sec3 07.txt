@@ -1,0 +1,28 @@
+Q7. Write a block containing two cursors: a simple cursor over PUBLISHER, and a parameterised cursor that accepts a pub_id. Loop over the publishers and, for each one, open the inner cursor to display that publisher's books indented below its name.
+
+//answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    CURSOR c_pub IS
+        SELECT pub_id, pub_name
+        FROM publisher;
+
+    CURSOR c_book(p_pub_id NUMBER) IS
+        SELECT title, price
+        FROM book
+        WHERE pub_id = p_pub_id;
+
+BEGIN
+    FOR p IN c_pub LOOP
+        DBMS_OUTPUT.PUT_LINE(p.pub_name);
+
+        FOR b IN c_book(p.pub_id) LOOP
+            DBMS_OUTPUT.PUT_LINE(
+                '   ' || b.title || ' - Rs.' || b.price
+            );
+        END LOOP;
+    END LOOP;
+END;
+/

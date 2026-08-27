@@ -1,0 +1,25 @@
+Q3. Write a cursor that takes two parameters, a minimum and a maximum price, and displays all books whose price falls in that range. Test it with 300 and 700.
+
+//answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    CURSOR c_book(
+        p_min_price NUMBER,
+        p_max_price NUMBER
+    ) IS
+        SELECT book_id, title, price
+        FROM book
+        WHERE price BETWEEN p_min_price AND p_max_price;
+
+BEGIN
+    FOR r IN c_book(300, 700) LOOP
+        DBMS_OUTPUT.PUT_LINE(
+            r.book_id || ' - ' ||
+            r.title || ' - Rs.' ||
+            r.price
+        );
+    END LOOP;
+END;
+/

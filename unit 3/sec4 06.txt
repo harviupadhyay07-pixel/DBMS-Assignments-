@@ -1,0 +1,19 @@
+Q6. Explain with one example each why %FOUND, %NOTFOUND, %ROWCOUNT and %ISOPEN all raise ORA-01001 when used on a cursor that has not been opened - except one of them. Which one, and what does it return instead?
+
+//answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    CURSOR c_book IS
+        SELECT book_id, title
+        FROM book;
+
+BEGIN
+    IF c_book%ISOPEN THEN
+        DBMS_OUTPUT.PUT_LINE('Cursor is open');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Cursor is not open');
+    END IF;
+END;
+/

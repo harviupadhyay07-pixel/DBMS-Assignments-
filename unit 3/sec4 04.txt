@@ -1,0 +1,21 @@
+Q4. A student opens a parameterised cursor as OPEN c_book; without supplying the argument. What error appears, and at which stage - compilation or execution? How does a DEFAULT value in the parameter change this behaviour?
+
+//answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    CURSOR c_book(
+        p_cat VARCHAR2 DEFAULT 'Database'
+    ) IS
+        SELECT title
+        FROM book
+        WHERE category = p_cat;
+
+BEGIN
+    FOR r IN c_book LOOP
+        DBMS_OUTPUT.PUT_LINE(r.title);
+    END LOOP;
+END;
+/
+

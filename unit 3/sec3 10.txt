@@ -1,0 +1,37 @@
+Q10. Write a parameterised cursor that accepts a number of days and lists every issue that is still not returned and is older than that many days. For each row, calculate a fine at Rs. 2 per overdue day and display it. Display the total fine payable at the end.
+
+//answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    CURSOR c_issue(p_days NUMBER) IS
+        SELECT issue_id,
+               book_id,
+               issue_date,
+               TRUNC(SYSDATE) - TRUNC(issue_date) AS overdue_days
+        FROM book_issue
+        WHERE return_date IS NULL
+        AND TRUNC(SYSDATE) - TRUNC(issue_date) > p_days;
+
+    v_fine NUMBER;
+    v_total_fine NUMBER := 0;
+
+BEGIN
+    FOR r IN c_issue(30) LOOP
+        v_fine := r.overdue_days * 2;
+        v_total_fine := v_total_fine + v_fine;
+
+        DBMS_OUTPUT.PUT_LINE(
+            'Issue ID: ' || r.issue_id ||
+            ', Book ID: ' || r.book_id ||
+            ', Overdue Days: ' || r.overdue_days ||
+            ', Fine: Rs.' || v_fine
+        );
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE(
+        'Total Fine Payable = Rs.' || v_total_fine
+    );
+END;
+/
