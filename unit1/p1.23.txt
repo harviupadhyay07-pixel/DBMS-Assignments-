@@ -1,0 +1,52 @@
+p1.23
+
+Problem Statement:  Your junior wrote this block with exactly 5 bugs. Find and fix all of them, and write ONE comment per bug naming the error: DECLARE v_name VARCHAR2(5) = 'Your Full Name'; v_bonus CONSTANT NUMBER; v_sal NUMBER := 25000 BEGIN v_bonus := v_sal * 0.1; 
+SELECT first_name FROM employees WHERE employee_id = 100; 
+DBMS_OUTPUT.PUT_LINE('Bonus: ' || v_bonus) END; Bugs to hunt: (1) = instead of := , (2) 
+VARCHAR2 too small for the value, (3) CONSTANT declared without a value and assigned later, (4) missing semicolon after a declaration, (5) SELECT without INTO inside PL/SQL. After fixing, the block must compile and print your bonus.
+Code Starter / Hint:  Fix pattern: v_name VARCHAR2(50) := '...'; c_bonus_rate CONSTANT 
+NUMBER := 0.1; SELECT first_name INTO v_fname FROM employees WHERE employee_id = 100;
+Anti-Plagiarism Personalisation:  Roll Number Seed + Name-Based — v_name = your full name, v_sal = roll_no * 1000 + 20000.
+Worked Example:  Roll#1: sal=21000 => bonus=2100 | Roll#25: sal=45000 => bonus=4500. All 5 bugs documented in comments.
+
+//answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    -- Bug 1 fixed:
+    -- := is used for assignment instead of =.
+    v_name VARCHAR2(50) := 'Harvi Upadhyay';
+
+    -- Bug 2 fixed:
+    -- VARCHAR2(50) is large enough for the full name.
+
+    -- Bug 3 fixed:
+    -- CONSTANT must be initialized when declared.
+    c_bonus_rate CONSTANT NUMBER := 0.1;
+
+    -- Bug 4 fixed:
+    -- Semicolon added after the declaration.
+    v_sal NUMBER := 76000;
+
+    v_bonus NUMBER;
+    v_fname employees.first_name%TYPE;
+BEGIN
+    v_bonus := v_sal * c_bonus_rate;
+
+    -- Bug 5 fixed:
+    -- SELECT statement in PL/SQL requires INTO.
+    SELECT first_name
+    INTO v_fname
+    FROM employees
+    WHERE employee_id = 100;
+
+    DBMS_OUTPUT.PUT_LINE('Name: ' || v_name);
+    DBMS_OUTPUT.PUT_LINE(
+        'Employee: ' || v_fname
+    );
+    DBMS_OUTPUT.PUT_LINE(
+        'Bonus: Rs.' || v_bonus
+    );
+END;
+/

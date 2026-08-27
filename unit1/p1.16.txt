@@ -1,0 +1,27 @@
+p1.16
+Problem Statement: Declare v_dname departments.department_name%TYPE and v_loc departments.location_id%TYPE. Fetch the department name and location for a seeded department_id. Print: "Dept [id]: [name] at location [loc]". Handle NO_DATA_FOUND. Then in a comment explain: if the DBA later changes department_name from VARCHAR2(30) to VARCHAR2(60), why does your block still work without any edit? That is the whole point of %TYPE.
+
+//answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    v_id NUMBER := 40;
+    v_dname departments.department_name%TYPE;
+    v_loc departments.location_id%TYPE;
+BEGIN
+    SELECT department_name, location_id
+    INTO v_dname, v_loc
+    FROM departments
+    WHERE department_id = v_id;
+
+    DBMS_OUTPUT.PUT_LINE(
+        'Dept ' || v_id || ': ' ||
+        v_dname || ' at location ' || v_loc
+    );
+
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        DBMS_OUTPUT.PUT_LINE('Department not found.');
+END;
+/

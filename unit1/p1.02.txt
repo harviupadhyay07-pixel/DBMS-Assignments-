@@ -1,0 +1,28 @@
+p1.2
+
+Problem Statement: Declare variables: v_name VARCHAR2(50), v_marks NUMBER(5,2), v_percentage NUMBER(5,2), v_dob DATE, v_passed BOOLEAN. Use your own name and last semester marks. Calculate percentage = (marks/500)*100. Print: name, marks, percentage (ROUND to 2 decimals), today's date using SYSDATE. Print "PASS" or "FAIL" based on v_passed.
+
+//answer
+SET SERVEROUTPUT ON;
+
+DECLARE
+    v_name VARCHAR2(50) := 'Harvi Upadhyay';
+    v_marks NUMBER(5,2) := 400;
+    v_percentage NUMBER(5,2);
+    v_dob DATE := DATE '2005-06-15'; -- Sample DOB
+    v_passed BOOLEAN := TRUE;
+BEGIN
+    v_percentage := ROUND((v_marks / 500) * 100, 2);
+
+    DBMS_OUTPUT.PUT_LINE('Name: ' || v_name);
+    DBMS_OUTPUT.PUT_LINE('Marks: ' || v_marks);
+    DBMS_OUTPUT.PUT_LINE('Percentage: ' || v_percentage || '%');
+    DBMS_OUTPUT.PUT_LINE('Today: ' || TO_CHAR(SYSDATE, 'DD-MON-YYYY'));
+
+    IF v_passed THEN
+        DBMS_OUTPUT.PUT_LINE('Result: PASS');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Result: FAIL');
+    END IF;
+END;
+/

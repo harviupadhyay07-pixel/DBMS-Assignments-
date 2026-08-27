@@ -1,0 +1,37 @@
+p1.14
+Problem Statement: Build a Jio/Airtel recharge receipt. Declare c_gst CONSTANT NUMBER := 18 and a base plan price. Calculate GST amount and total payable. Print a receipt aligned with RPAD: plan name, base price, GST @18%, and total — amounts formatted with TO_CHAR(value, '99,999.99'). Add validity date = SYSDATE + 28 printed as DD-MON-YYYY.
+
+//answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    c_gst CONSTANT NUMBER := 18;
+    v_plan NUMBER := 199;
+    v_gst NUMBER;
+    v_total NUMBER;
+    v_validity DATE;
+BEGIN
+    v_gst := v_plan * c_gst / 100;
+    v_total := v_plan + v_gst;
+    v_validity := SYSDATE + 28;
+
+    DBMS_OUTPUT.PUT_LINE('----- RECHARGE RECEIPT -----');
+    DBMS_OUTPUT.PUT_LINE(
+        RPAD('Plan:', 15) || 'Rs.' ||
+        TO_CHAR(v_plan, '99,999.99')
+    );
+    DBMS_OUTPUT.PUT_LINE(
+        RPAD('GST @18%:', 15) ||
+        TO_CHAR(v_gst, '99,999.99')
+    );
+    DBMS_OUTPUT.PUT_LINE(
+        RPAD('Total:', 15) ||
+        TO_CHAR(v_total, '99,999.99')
+    );
+    DBMS_OUTPUT.PUT_LINE(
+        'Valid Till: ' ||
+        TO_CHAR(v_validity, 'DD-MON-YYYY')
+    );
+END;
+/
