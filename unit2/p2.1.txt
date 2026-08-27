@@ -1,0 +1,85 @@
+p2.1
+Input marks for 5 subjects (use variables). Calculate total and percentage. Use IF-ELSIF for grade: >=90=A+, >=80=A, >=70=B, >=60=C, >=50=D, <50=FAIL. Rules using nested IF: (1) If any subject <35 marks: DETAINED — print which subject failed. (2) If all pass: print class rank: Distinction(>=75%), First(>=60%), Second(>=50%), Pass(<50% but all sub>=35). Print full report card with all 5 marks, total, percentage, grade and result.
+
+//answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    v_name VARCHAR2(50) := 'Harvi Upadhyay';
+    v_roll NUMBER := 56;
+
+    v_sub1 NUMBER := 78;
+    v_sub2 NUMBER := 82;
+    v_sub3 NUMBER := 69;
+    v_sub4 NUMBER := 91;
+    v_sub5 NUMBER := 74;
+
+    v_total NUMBER;
+    v_percentage NUMBER;
+    v_grade VARCHAR2(10);
+    v_result VARCHAR2(20);
+    v_class VARCHAR2(30);
+BEGIN
+    v_total := v_sub1 + v_sub2 + v_sub3 + v_sub4 + v_sub5;
+    v_percentage := v_total / 5;
+
+    IF v_percentage >= 90 THEN
+        v_grade := 'A+';
+    ELSIF v_percentage >= 80 THEN
+        v_grade := 'A';
+    ELSIF v_percentage >= 70 THEN
+        v_grade := 'B';
+    ELSIF v_percentage >= 60 THEN
+        v_grade := 'C';
+    ELSIF v_percentage >= 50 THEN
+        v_grade := 'D';
+    ELSE
+        v_grade := 'FAIL';
+    END IF;
+
+    IF v_sub1 < 35 OR v_sub2 < 35 OR v_sub3 < 35
+       OR v_sub4 < 35 OR v_sub5 < 35 THEN
+
+        v_result := 'DETAINED';
+
+        IF v_sub1 < 35 THEN
+            DBMS_OUTPUT.PUT_LINE('Failed Subject 1');
+        ELSIF v_sub2 < 35 THEN
+            DBMS_OUTPUT.PUT_LINE('Failed Subject 2');
+        ELSIF v_sub3 < 35 THEN
+            DBMS_OUTPUT.PUT_LINE('Failed Subject 3');
+        ELSIF v_sub4 < 35 THEN
+            DBMS_OUTPUT.PUT_LINE('Failed Subject 4');
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('Failed Subject 5');
+        END IF;
+
+    ELSE
+        v_result := 'PASS';
+
+        IF v_percentage >= 75 THEN
+            v_class := 'Distinction';
+        ELSIF v_percentage >= 60 THEN
+            v_class := 'First Class';
+        ELSIF v_percentage >= 50 THEN
+            v_class := 'Second Class';
+        ELSE
+            v_class := 'Pass Class';
+        END IF;
+    END IF;
+
+    DBMS_OUTPUT.PUT_LINE('Name: ' || v_name);
+    DBMS_OUTPUT.PUT_LINE('Roll No: ' || v_roll);
+    DBMS_OUTPUT.PUT_LINE('Subject 1: ' || v_sub1);
+    DBMS_OUTPUT.PUT_LINE('Subject 2: ' || v_sub2);
+    DBMS_OUTPUT.PUT_LINE('Subject 3: ' || v_sub3);
+    DBMS_OUTPUT.PUT_LINE('Subject 4: ' || v_sub4);
+    DBMS_OUTPUT.PUT_LINE('Subject 5: ' || v_sub5);
+    DBMS_OUTPUT.PUT_LINE('Total: ' || v_total);
+    DBMS_OUTPUT.PUT_LINE('Percentage: ' || v_percentage || '%');
+    DBMS_OUTPUT.PUT_LINE('Grade: ' || v_grade);
+    DBMS_OUTPUT.PUT_LINE('Result: ' || v_result);
+    DBMS_OUTPUT.PUT_LINE('Class: ' || v_class);
+END;
+/

@@ -1,0 +1,59 @@
+p2.3
+
+Simulate an ATM with initial_balance = roll_no*500+5000. Withdrawal must be >0, multiple of 100, <=10000 per transaction and <=balance. Count successful transactions. Exit when choice=3 or balance=0. Print transaction receipt and final summary.
+
+//answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    v_roll NUMBER := 56;
+    v_balance NUMBER := v_roll * 500 + 5000;
+    v_choice NUMBER;
+    v_withdraw NUMBER;
+    v_count NUMBER := 0;
+    v_total_withdraw NUMBER := 0;
+BEGIN
+    FOR i IN 1..4 LOOP
+
+        IF i = 1 THEN
+            v_choice := 1;
+            v_withdraw := 5000;
+        ELSIF i = 2 THEN
+            v_choice := 1;
+            v_withdraw := 2500;
+        ELSIF i = 3 THEN
+            v_choice := 1;
+            v_withdraw := 10000;
+        ELSE
+            v_choice := 1;
+            v_withdraw := 1500;
+        END IF;
+
+        IF v_withdraw <= 0 THEN
+            DBMS_OUTPUT.PUT_LINE('Error: Amount must be greater than 0.');
+
+        ELSIF MOD(v_withdraw, 100) <> 0 THEN
+            DBMS_OUTPUT.PUT_LINE('Error: Amount must be multiple of 100.');
+
+        ELSIF v_withdraw > 10000 THEN
+            DBMS_OUTPUT.PUT_LINE('Error: Maximum withdrawal is Rs.10000.');
+
+        ELSIF v_withdraw > v_balance THEN
+            DBMS_OUTPUT.PUT_LINE('Error: Insufficient balance.');
+
+        ELSE
+            v_balance := v_balance - v_withdraw;
+            v_count := v_count + 1;
+            v_total_withdraw := v_total_withdraw + v_withdraw;
+
+            DBMS_OUTPUT.PUT_LINE('Withdrawn: Rs.' || v_withdraw);
+            DBMS_OUTPUT.PUT_LINE('Balance: Rs.' || v_balance);
+        END IF;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Transactions Done: ' || v_count);
+    DBMS_OUTPUT.PUT_LINE('Total Withdrawn: Rs.' || v_total_withdraw);
+    DBMS_OUTPUT.PUT_LINE('Closing Balance: Rs.' || v_balance);
+END;
+/

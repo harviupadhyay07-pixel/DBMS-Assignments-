@@ -1,0 +1,97 @@
+p2.5
+
+Print first N Fibonacci numbers where N = 5 + roll_no MOD 8. Check whether the Nth Fibonacci number is prime. Print all prime numbers between 1 and 100 and count them. Find GCD using Euclidean algorithm. Check whether a number is a perfect number.
+
+//Answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    v_roll NUMBER := 56;
+    v_n NUMBER := 5 + MOD(v_roll, 8);
+
+    a NUMBER := 0;
+    b NUMBER := 1;
+    c NUMBER;
+    i NUMBER := 1;
+
+    v_last NUMBER;
+    v_div NUMBER;
+    v_prime VARCHAR2(10);
+
+    x NUMBER := 56;
+    y NUMBER := 48;
+    r NUMBER;
+
+    v_perfect NUMBER := 28;
+    v_sum NUMBER := 0;
+BEGIN
+    DBMS_OUTPUT.PUT_LINE('Fibonacci Numbers:');
+
+    WHILE i <= v_n LOOP
+        DBMS_OUTPUT.PUT(a || ' ');
+        v_last := a;
+        c := a + b;
+        a := b;
+        b := c;
+        i := i + 1;
+    END LOOP;
+
+    DBMS_OUTPUT.NEW_LINE;
+
+    v_prime := 'Prime';
+    v_div := 2;
+
+    IF v_last < 2 THEN
+        v_prime := 'Not Prime';
+    ELSE
+        WHILE v_div <= v_last / 2 LOOP
+            IF MOD(v_last, v_div) = 0 THEN
+                v_prime := 'Not Prime';
+            END IF;
+            v_div := v_div + 1;
+        END LOOP;
+    END IF;
+
+    DBMS_OUTPUT.PUT_LINE('Last Fibonacci: ' || v_last);
+    DBMS_OUTPUT.PUT_LINE('Prime Check: ' || v_prime);
+
+    DBMS_OUTPUT.PUT_LINE('Prime Numbers between 1 and 100:');
+
+    FOR n IN 2..100 LOOP
+        v_prime := 'Prime';
+
+        FOR d IN 2..FLOOR(n / 2) LOOP
+            IF MOD(n, d) = 0 THEN
+                v_prime := 'Not Prime';
+            END IF;
+        END LOOP;
+
+        IF v_prime = 'Prime' THEN
+            DBMS_OUTPUT.PUT(n || ' ');
+        END IF;
+    END LOOP;
+
+    DBMS_OUTPUT.NEW_LINE;
+
+    WHILE y <> 0 LOOP
+        r := MOD(x, y);
+        x := y;
+        y := r;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('GCD: ' || x);
+
+    FOR i IN 1..v_perfect - 1 LOOP
+        IF MOD(v_perfect, i) = 0 THEN
+            v_sum := v_sum + i;
+        END IF;
+    END LOOP;
+
+    IF v_sum = v_perfect THEN
+        DBMS_OUTPUT.PUT_LINE(v_perfect || ' is a Perfect Number');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE(v_perfect || ' is not a Perfect Number');
+    END IF;
+END;
+/

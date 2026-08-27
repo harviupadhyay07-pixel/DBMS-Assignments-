@@ -1,0 +1,62 @@
+p2.6
+
+Build a Zomato-style delivery charge calculator. Base charge: <3km=Free, 3-8km=Rs.29, 8-15km=Rs.49, >15km=Rs.79. Apply surcharges for Rain, Late Night, Festival Day and Peak Hour. If order_value>499, delivery is free. If First Order, give 50% off delivery. Print full receipt.
+
+//Answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    v_food_total NUMBER := 450;
+    v_distance NUMBER := 6;
+
+    v_rain CHAR(1) := 'Y';
+    v_late_night CHAR(1) := 'N';
+    v_festival CHAR(1) := 'N';
+    v_peak_hour CHAR(1) := 'Y';
+    v_first_order CHAR(1) := 'N';
+
+    v_base NUMBER := 0;
+    v_rain_charge NUMBER := 0;
+    v_peak_charge NUMBER := 0;
+    v_final_delivery NUMBER;
+    v_grand_total NUMBER;
+BEGIN
+    IF v_distance < 3 THEN
+        v_base := 0;
+    ELSIF v_distance <= 8 THEN
+        v_base := 29;
+    ELSIF v_distance <= 15 THEN
+        v_base := 49;
+    ELSE
+        v_base := 79;
+    END IF;
+
+    IF v_food_total > 499 THEN
+        v_final_delivery := 0;
+    ELSE
+        IF v_rain = 'Y' THEN
+            v_rain_charge := ROUND(v_base * 0.20);
+        END IF;
+
+        IF v_peak_hour = 'Y' THEN
+            v_peak_charge := ROUND(v_base * 0.10);
+        END IF;
+
+        v_final_delivery := v_base + v_rain_charge + v_peak_charge;
+
+        IF v_first_order = 'Y' THEN
+            v_final_delivery := ROUND(v_final_delivery * 0.50);
+        END IF;
+    END IF;
+
+    v_grand_total := v_food_total + v_final_delivery;
+
+    DBMS_OUTPUT.PUT_LINE('Food Total: Rs.' || v_food_total);
+    DBMS_OUTPUT.PUT_LINE('Base Delivery: Rs.' || v_base);
+    DBMS_OUTPUT.PUT_LINE('Rain Surcharge: Rs.' || v_rain_charge);
+    DBMS_OUTPUT.PUT_LINE('Peak Hour Surcharge: Rs.' || v_peak_charge);
+    DBMS_OUTPUT.PUT_LINE('Final Delivery: Rs.' || v_final_delivery);
+    DBMS_OUTPUT.PUT_LINE('Grand Total: Rs.' || v_grand_total);
+END;
+/

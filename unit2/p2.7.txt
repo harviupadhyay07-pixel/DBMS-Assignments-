@@ -1,0 +1,69 @@
+p2.7
+
+Build LJICA semester result system using attendance percentage, theory marks out of 70, practical marks out of 30 and assignment marks out of 20 where maximum 10 marks are counted. Attendance below 40% means DETAINED, theory below 28 means FAIL in Theory, and practical below 12 means FAIL in Practical. Otherwise calculate total, percentage, grade, result and remark.
+
+//answer
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    v_name VARCHAR2(50) := 'Harvi Upadhyay';
+    v_roll NUMBER := 56;
+
+    v_attendance NUMBER := 85;
+    v_theory NUMBER := 60;
+    v_practical NUMBER := 25;
+    v_assignment NUMBER := 18;
+
+    v_assignment_counted NUMBER;
+    v_total NUMBER;
+    v_percentage NUMBER;
+    v_grade VARCHAR2(10);
+    v_result VARCHAR2(30);
+BEGIN
+    v_assignment_counted := LEAST(v_assignment, 10);
+
+    IF v_attendance < 40 THEN
+        v_result := 'DETAINED';
+
+    ELSIF v_theory < 28 THEN
+        v_result := 'FAIL IN THEORY';
+
+    ELSIF v_practical < 12 THEN
+        v_result := 'FAIL IN PRACTICAL';
+
+    ELSE
+        v_total := v_theory + v_practical + v_assignment_counted;
+        v_percentage := (v_total / 110) * 100;
+
+        CASE
+            WHEN v_percentage >= 75 THEN
+                v_grade := 'A+';
+                v_result := 'DISTINCTION';
+
+            WHEN v_percentage >= 60 THEN
+                v_grade := 'A';
+                v_result := 'PASS';
+
+            WHEN v_percentage >= 50 THEN
+                v_grade := 'B';
+                v_result := 'PASS';
+
+            ELSE
+                v_grade := 'D';
+                v_result := 'PASS';
+        END CASE;
+    END IF;
+
+    DBMS_OUTPUT.PUT_LINE('Name: ' || v_name);
+    DBMS_OUTPUT.PUT_LINE('Roll No: ' || v_roll);
+    DBMS_OUTPUT.PUT_LINE('Attendance: ' || v_attendance || '%');
+    DBMS_OUTPUT.PUT_LINE('Theory: ' || v_theory);
+    DBMS_OUTPUT.PUT_LINE('Practical: ' || v_practical);
+    DBMS_OUTPUT.PUT_LINE('Assignment Counted: ' || v_assignment_counted);
+    DBMS_OUTPUT.PUT_LINE('Total: ' || v_total);
+    DBMS_OUTPUT.PUT_LINE('Percentage: ' || ROUND(v_percentage, 2) || '%');
+    DBMS_OUTPUT.PUT_LINE('Grade: ' || v_grade);
+    DBMS_OUTPUT.PUT_LINE('Result: ' || v_result);
+END;
+/
